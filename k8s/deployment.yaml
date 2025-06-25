@@ -1,20 +1,23 @@
+# deployment.yaml สำหรับกำหนด Deployment ใน Kubernetes
+# apiVersion: กำหนดเวอร์ชันของ Kubernetes API ที่ใช้สำหรับ Deployment
 apiVersion: apps/v1
+# kind: ระบุชนิดของ resource ที่จะสร้าง ที่นี่คือ Deployment
 kind: Deployment
 metadata:
-  name: hello-python
+  name: hello-python # ชื่อของ Deployment
 spec:
-  replicas: 2
+  replicas: 2 # จำนวน Pod ที่ต้องการให้รันพร้อมกัน
   selector:
     matchLabels:
-      app: hello-python
+      app: hello-python # เลือก Pod ที่มี label app=hello-python
   template:
     metadata:
       labels:
-        app: hello-python
+        app: hello-python # label ที่จะถูกกำหนดให้กับ Pod ที่สร้างจาก Deployment นี้
     spec:
       containers:
         - name: app # ชื่อ container
-          image: orathaisu/hello-python:v2.0.0 # เปลี่ยน tag เป็น v2.0.0
-          imagePullPolicy: Always 
+          image: orathaisu/hello-python:v3.0.0 # เปลี่ยน tag เป็น v3.0.0
+          imagePullPolicy: Always # ดึง image ใหม่ทุกครั้งที่ deploy
           ports:
-            - containerPort: 80
+            - containerPort: 80 # พอร์ตที่ container เปิดให้บริการ
