@@ -20,3 +20,7 @@ def test():
 @app.get("/plus2/{x}")
 def test(x: int):
     return {"message": x + 2}
+
+@app.get("/chistmas")
+def test():
+    return {"message": "mary ChrismastX"}
