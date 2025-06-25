@@ -1,36 +1,39 @@
-name: Build and Push Docker # กำหนดชื่อ workflow ที่จะแสดงใน GitHub Actions
+name: Build and Push Docker
 
-on: # กำหนดเงื่อนไขการทำงานของ workflow
-  push: # ทำงานเมื่อมีการ push โค้ด
-    branches: [main] # เฉพาะ branch main
+on:
+  push:
+    branches: [main]
 
-jobs: # กำหนดกลุ่มของงาน (jobs)
-  build: # ชื่องาน (job) ว่า build
-    runs-on: ubuntu-latest # ใช้ runner ที่เป็น Ubuntu เวอร์ชันล่าสุด
-    steps: # ลำดับขั้นตอนใน job นี้
-      - uses: actions/checkout@v3 # เช็คเอาท์ซอร์สโค้ดจาก repository
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-      - name: Set up Python # ตั้งชื่อขั้นตอนนี้ว่า Set up Python
-        uses: actions/setup-python@v4 # ใช้ action สำหรับติดตั้ง Python
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11' # กำหนดเวอร์ชัน Python ที่ต้องการ
+          python-version: '3.11'
 
-      - name: Log in to DockerHub # ตั้งชื่อขั้นตอนนี้ว่า Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # ล็อกอินเข้า DockerHub โดยใช้ username และ password ที่เก็บใน secrets
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker image # ตั้งชื่อขั้นตอนนี้ว่า Build Docker image
-        run: docker build -t orathaisu/hello-python:${{ github.sha }} . # สร้าง Docker image และแท็กเป็น commit hash ปัจจุบัน
+      - name: Build Docker image # สร้าง Docker image และแท็กเป็น commit hash ปัจจุบัน
+        run: docker build -t orathaisu/hello-python:${{ github.sha }} .
 
-      - name: Push to DockerHub # ตั้งชื่อขั้นตอนนี้ว่า Push to DockerHub
-        run: docker push orathaisu/hello-python:${{ github.sha }} # อัปโหลด Docker image ที่สร้างไปยัง DockerHub
-        
-      - name: Replace image tag in deployment.yaml # ตั้งชื่อขั้นตอนนี้ว่า Replace image tag in deployment.yaml
-        run: sed -i "s|orathaisu/hello-python:.*|orathaisu/hello-python:${{ github.sha }}|g" k8s/deployment.yaml # แทนที่ tag ของ Docker image ในไฟล์ deployment.yaml ด้วย commit hash ปัจจุบัน
+      - name: Push to DockerHub # อัปโหลด Docker image ที่สร้างไปยัง DockerHub
+        run: docker push orathaisu/hello-python:${{ github.sha }}
 
-      - name: Commit updated deployment.yaml
+      - name: Replace image tag in deployment.yaml # แทนที่ tag ของ image ใน deployment.yaml ให้ตรงกับ commit hash ล่าสุด
+        run: sed -i "s|orathaisu/hello-python:.*|orathaisu/hello-python:${{ github.sha }}|g" k8s/deployment.yaml
+
+      - name: Commit updated deployment.yaml # commit และ push ไฟล์ deployment.yaml ที่ถูกแก้ไขกลับไปที่ repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --local user.email "orathai.k@v-xip.com"
-          git config --local user.name "orathaipp"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add k8s/deployment.yaml
-          git commit -m "Update image tag to ${{ github.sha }}"
-          git push origin main # อัปเดตไฟล์ deployment.yaml ใน branch main ด้วย tag ใหม่
+          git commit -m "🚀 Update image tag to ${{ github.sha }}"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
