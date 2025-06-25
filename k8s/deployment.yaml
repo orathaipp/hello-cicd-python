@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: orathaisu/hello-python:REPLACE_TAG # <-- แทนด้วย tag ล่าสุด
+          image: orathaisu/hello-python:8865687a3b555b790cde62396c24f57b5fda8559 # <-- แทนด้วย tag ล่าสุด
           imagePullPolicy: Always
           ports:
             - containerPort: 80
