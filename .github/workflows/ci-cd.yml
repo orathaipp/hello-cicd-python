@@ -28,26 +28,14 @@ jobs: # กำหนดกลุ่มของงาน (jobs)
       - name: Log in to DockerHub # ล็อกอินเข้า DockerHub โดยใช้ username และ password ที่เก็บใน secrets
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker image # สร้าง Docker image และแท็กเป็น latest และ commit hash ปัจจุบัน
-        run: |
-          docker build -t orathaisu/hello-python:latest . # สร้าง image และแท็กเป็น latest
-          docker tag orathaisu/hello-python:latest orathaisu/hello-python:${{ github.sha }} # แท็ก image เดิมด้วย commit hash
+      - name: Build Docker image # สร้าง Docker image และแท็กเป็น v1.0.0
+        run: docker build -t orathaisu/hello-python:v1.0.0 .
 
-      - name: Push Docker images # อัปโหลด Docker image ที่สร้างไปยัง DockerHub ทั้ง 2 tag
-        run: |
-          docker push orathaisu/hello-python:latest # push image ที่ tag เป็น latest
-          docker push orathaisu/hello-python:${{ github.sha }} # push image ที่ tag เป็น commit hash
+      - name: Push Docker image # อัปโหลด Docker image ที่สร้างไปยัง DockerHub ด้วย tag v1.0.0
+        run: docker push orathaisu/hello-python:v1.0.0
 
-      - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย commit hash ล่าสุด (เฉพาะบรรทัด image เท่านั้น)
+      - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย v1.0.0
         run: |
-          sed -i "s|image: orathaisu/hello-python:.*|image: orathaisu/hello-python:${{ github.sha }}|g" k8s/deployment.yaml
+          sed -i "s|image: orathaisu/hello-python:.*|image: orathaisu/hello-python:v1.0.0|g" k8s/deployment.yaml
 
-      - name: Commit updated deployment.yaml # commit และ push ไฟล์ deployment.yaml ที่ถูกแก้ไขกลับไปที่ repository เพื่อให้ deployment ใช้ image tag ล่าสุด
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com" # ตั้งค่า email สำหรับ git
-          git config --global user.name "github-actions[bot]" # ตั้งค่าชื่อสำหรับ git
-          git add k8s/deployment.yaml # เพิ่มไฟล์ deployment.yaml ที่ถูกแก้ไขเข้า staging
-          git commit -m "🚀 Deploy image ${{ github.sha }}" || true # commit การเปลี่ยนแปลง (ถ้าไม่มีอะไรเปลี่ยนจะไม่ error)
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main # push กลับไปที่ branch main
+

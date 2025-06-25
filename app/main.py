@@ -28,3 +28,7 @@ def test():
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+@app.get("/status")
+def status():
+    return {"status": "ok", "message": "Service is running smoothly!"}
