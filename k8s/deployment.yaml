@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app # ชื่อ container
-          image: orathaisu/hello-python:REPLACE_TAG # ตรงกับที่ workflow จะมาแทนที่ด้วย commit hash ล่าสุด
+          image: orathaisu/hello-python:6380b77411dd4c7f8a1883ac2971e128474d9b90
           imagePullPolicy: Always # ดึง image ใหม่ทุกครั้งที่ deploy
           ports:
             - containerPort: 80 # พอร์ตที่ container เปิดให้บริการ
