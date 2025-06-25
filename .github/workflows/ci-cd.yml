@@ -25,17 +25,17 @@ jobs: # กำหนดกลุ่มของงาน (jobs)
         run: |
           PYTHONPATH=. pytest tests
 
-      - name: Log in to DockerHub # ล็อกอินเข้า DockerHub โดยใช้ username และ password ที่เก็บใน secrets
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Log in to GitHub Container Registry # ล็อกอินเข้า GitHub Container Registry ด้วย GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u orathaisu --password-stdin
 
       - name: Build Docker image # สร้าง Docker image และแท็กเป็น v3.0.0
-        run: docker build -t orathaisu/hello-python:v3.0.0 .
+        run: docker build -t ghcr.io/orathaisu/hello-python:v3.0.0 .
 
-      - name: Push Docker image # อัปโหลด Docker image ที่สร้างไปยัง DockerHub ด้วย tag v3.0.0
-        run: docker push orathaisu/hello-python:v3.0.0
+      - name: Push Docker image # อัปโหลด Docker image ที่สร้างไปยัง GitHub Container Registry ด้วย tag v3.0.0
+        run: docker push ghcr.io/orathaisu/hello-python:v3.0.0
 
-      - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย v3.0.0
+      - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย ghcr.io/orathaisu/hello-python:v3.0.0
         run: |
-          sed -i "s|image: orathaisu/hello-python:.*|image: orathaisu/hello-python:v3.0.0|g" k8s/deployment.yaml
+          sed -i "s|image: .*|image: ghcr.io/orathaisu/hello-python:v3.0.0|g" k8s/deployment.yaml
 
 

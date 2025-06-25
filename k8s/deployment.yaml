@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: app # ชื่อ container
-          image: orathaisu/hello-python:v3.0.0 # เปลี่ยน tag เป็น v3.0.0
-          imagePullPolicy: Always # ดึง image ใหม่ทุกครั้งที่ deploy
+          image: ghcr.io/orathaisu/hello-python:v3.0.0 # เปลี่ยนชื่อ image เป็น ghcr.io/orathaisu/hello-python:v3.0.0
+          imagePullPolicy: Always 
           ports:
-            - containerPort: 80 # พอร์ตที่ container เปิดให้บริการ
+            - containerPort: 80
