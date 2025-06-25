@@ -48,5 +48,5 @@ jobs: # กำหนดกลุ่มของงาน (jobs)
           git config --global user.email "github-actions[bot]@users.noreply.github.com" # ตั้งค่า email สำหรับ git
           git config --global user.name "github-actions[bot]" # ตั้งค่าชื่อสำหรับ git
           git add k8s/deployment.yaml # เพิ่มไฟล์ deployment.yaml ที่ถูกแก้ไขเข้า staging
-          git commit -m "🚀 Deploy image ${{ github.sha }}" # commit การเปลี่ยนแปลง
+          git commit -m "🚀 Deploy image ${{ github.sha }}" || true # commit การเปลี่ยนแปลง (ถ้าไม่มีอะไรเปลี่ยนจะไม่ error)
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main # push กลับไปที่ branch main
