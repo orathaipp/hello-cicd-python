@@ -20,7 +20,7 @@ spec:
 <<<<<<< HEAD
           image: orathaisu/hello-python:95536a2e32ed47caad326028aae81435a43f2f6c
 =======
-          image: orathaisu/hello-python:REPLACE_TAG # แทนที่ด้วย tag ของ image ที่ต้องการใช้
+          image: orathaisu/hello-python:4d96c0d29a94eccbcc5985d7a2becc60dd1c49d1 # แทนที่ด้วย tag ของ image ที่ต้องการใช้
 >>>>>>> Force add ci-cd.yml for GitHub Actions
           ports:
             - containerPort: 80 # พอร์ตที่ container เปิดให้บริการ
