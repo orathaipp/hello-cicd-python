@@ -15,4 +15,4 @@ def hello():
 
 @app.get("/test")
 def test():
-    return {"Test, Hello World!"}
+    return {"message": "Test, Hello World!"} 
