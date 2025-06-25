@@ -1,13 +1,15 @@
+# ใช้ Python base image
 FROM python:3.10-slim
 
+# ตั้ง working directory
 WORKDIR /app
 
-# Copy requirements.txt จาก root repo เข้าไปใน /app
-COPY ../requirements.txt .
-
+# ติดตั้ง dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source code ใน /app เข้า container
-COPY . .
+# คัดลอก source code เข้า container (โฟลเดอร์ app/)
+COPY app ./app
 
+# รัน FastAPI ด้วย uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
