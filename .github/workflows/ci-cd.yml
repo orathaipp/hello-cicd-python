@@ -1,25 +1,25 @@
-name: Build and Push Docker
+name: Build and Push Docker # กำหนดชื่อ workflow ที่จะแสดงใน GitHub Actions
 
-on:
-  push:
-    branches: [main]
+on: # กำหนดเงื่อนไขการทำงานของ workflow
+  push: # ทำงานเมื่อมีการ push โค้ด
+    branches: [main] # เฉพาะ branch main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+jobs: # กำหนดกลุ่มของงาน (jobs)
+  build: # ชื่องาน (job) ว่า build
+    runs-on: ubuntu-latest # ใช้ runner ที่เป็น Ubuntu เวอร์ชันล่าสุด
+    steps: # ลำดับขั้นตอนใน job นี้
+      - uses: actions/checkout@v3 # เช็คเอาท์ซอร์สโค้ดจาก repository
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python # ตั้งชื่อขั้นตอนนี้ว่า Set up Python
+        uses: actions/setup-python@v4 # ใช้ action สำหรับติดตั้ง Python
         with:
-          python-version: '3.11'
+          python-version: '3.11' # กำหนดเวอร์ชัน Python ที่ต้องการ
 
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Log in to DockerHub # ตั้งชื่อขั้นตอนนี้ว่า Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # ล็อกอินเข้า DockerHub โดยใช้ username และ password ที่เก็บใน secrets
 
-      - name: Build Docker image
-        run: docker build -t orathaisu/hello-python:latest .
+      - name: Build Docker image # ตั้งชื่อขั้นตอนนี้ว่า Build Docker image
+        run: docker build -t orathaisu/hello-python:latest . # สร้าง Docker image และแท็กเป็น orathaisu/hello-python:latest
 
-      - name: Push to DockerHub
-        run: docker push orathaisu/hello-python:latest
+      - name: Push to DockerHub # ตั้งชื่อขั้นตอนนี้ว่า Push to DockerHub
+        run: docker push orathaisu/hello-python:latest # อัปโหลด Docker image ที่สร้างไปยัง DockerHub
