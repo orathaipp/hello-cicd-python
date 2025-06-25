@@ -16,3 +16,7 @@ def hello():
 @app.get("/test")
 def test():
     return {"message": "Test, Hello World!"} 
+
+@app.get("/plus2/{x}")
+def test(x: int):
+    return {"message": x + 2}
