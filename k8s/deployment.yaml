@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: app # ชื่อ container
-          image: orathaisu/hello-python:REPLACE_TAG # ชื่อและ tag ของ Docker image ที่จะใช้
+          image: orathaisu/hello-python:95536a2e32ed47caad326028aae81435a43f2f6c
           ports:
             - containerPort: 80 # พอร์ตที่ container เปิดให้บริการ
