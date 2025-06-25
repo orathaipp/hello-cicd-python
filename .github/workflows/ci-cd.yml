@@ -19,21 +19,25 @@ jobs:
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker image # สร้าง Docker image และแท็กเป็น commit hash ปัจจุบัน
-        run: docker build -t orathaisu/hello-python:${{ github.sha }} .
+      - name: Build Docker image
+        run: |
+          docker build -t orathaisu/hello-python:latest .
+          docker tag orathaisu/hello-python:latest orathaisu/hello-python:${{ github.sha }}
 
-      - name: Push to DockerHub # อัปโหลด Docker image ที่สร้างไปยัง DockerHub
-        run: docker push orathaisu/hello-python:${{ github.sha }}
+      - name: Push Docker images
+        run: |
+          docker push orathaisu/hello-python:latest
+          docker push orathaisu/hello-python:${{ github.sha }}
 
-      - name: Replace image tag in deployment.yaml # แทนที่ tag ของ image ใน deployment.yaml ให้ตรงกับ commit hash ล่าสุด
-        run: sed -i "s|orathaisu/hello-python:REPLACE_TAG|orathaisu/hello-python:${{ github.sha }}|g" k8s/deployment.yaml
+      - name: Replace image tag in deployment.yaml
+        run: sed -i "s|REPLACE_TAG|${{ github.sha }}|g" k8s/deployment.yaml
 
-      - name: Commit updated deployment.yaml # commit และ push ไฟล์ deployment.yaml ที่ถูกแก้ไขกลับไปที่ repository
+      - name: Commit updated deployment.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add k8s/deployment.yaml
-          git commit -m "🚀 Update image tag to ${{ github.sha }}"
+          git commit -m "🚀 Deploy image ${{ github.sha }}"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
