@@ -18,3 +18,13 @@ def test_plus2():
     response = client.get("/plus2/3")
     assert response.status_code == 200
     assert response.json() == {"message": 5}
+
+def test_christmas():
+    response = client.get("/chistmas")
+    assert response.status_code == 200
+    assert response.json() == {"message": "mary ChrismastX"}
+
+def test_health():
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "healthy"}

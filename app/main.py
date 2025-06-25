@@ -24,3 +24,7 @@ def test(x: int):
 @app.get("/chistmas")
 def test():
     return {"message": "mary ChrismastX"}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
