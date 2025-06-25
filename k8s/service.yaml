@@ -1,11 +1,14 @@
+# service.yaml สำหรับกำหนด Service ใน Kubernetes
+# apiVersion: กำหนดเวอร์ชันของ Kubernetes API ที่ใช้
 apiVersion: v1
+# kind: ระบุชนิดของ resource ที่จะสร้าง ที่นี่คือ Service
 kind: Service
 metadata:
-  name: hello-python-service
+  name: hello-python-service # ชื่อของ Service ที่จะสร้าง
 spec:
   selector:
-    app: hello-python
+    app: hello-python # เลือก Pod ที่มี label app=hello-python
   ports:
-    - port: 80
-      targetPort: 80
-  type: NodePort
+    - port: 80 # พอร์ตที่ Service เปิดให้เข้าถึงจากภายนอก
+      targetPort: 80 # พอร์ตที่ Pod จริง ๆ รับข้อมูล
+  type: NodePort # ประเภทของ Service ให้เข้าถึงได้จาก Node ทุกตัวใน cluster
