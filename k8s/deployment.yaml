@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app # ชื่อ container
-          image: orathaisu/hello-python:v1.0.0 # เปลี่ยน tag เป็น v1.0.0 (หรือ tag เวอร์ชันที่ต้องการ)
+          image: orathaisu/hello-python:v2.0.0 # เปลี่ยน tag เป็น v2.0.0
           imagePullPolicy: Always 
           ports:
             - containerPort: 80

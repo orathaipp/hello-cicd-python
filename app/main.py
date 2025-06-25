@@ -32,3 +32,11 @@ def health():
 @app.get("/status")
 def status():
     return {"status": "ok", "message": "Service is running smoothly!"}
+
+@app.get("/add/{x}/{y}")
+def add(x: int, y: int):
+    """
+    Add two numbers and return the result.
+    """
+    result = x + y
+    return {"result": result}

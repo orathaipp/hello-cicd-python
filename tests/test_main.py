@@ -33,3 +33,8 @@ def test_status():
     response = client.get("/status")
     assert response.status_code == 200
     assert response.json() == {"status": "ok", "message": "Service is running smoothly!"}
+
+def test_add():
+    response = client.get("/add/3/4")
+    assert response.status_code == 200
+    assert response.json() == {"result": 7}
