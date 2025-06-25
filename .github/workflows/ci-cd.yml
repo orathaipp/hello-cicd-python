@@ -38,8 +38,9 @@ jobs: # กำหนดกลุ่มของงาน (jobs)
           docker push orathaisu/hello-python:latest # push image ที่ tag เป็น latest
           docker push orathaisu/hello-python:${{ github.sha }} # push image ที่ tag เป็น commit hash
 
-      - name: Replace image tag in deployment.yaml # แทนที่ REPLACE_TAG ใน deployment.yaml ด้วย commit hash ล่าสุด
-        run: sed -i "s|REPLACE_TAG|${{ github.sha }}|g" k8s/deployment.yaml
+      - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย commit hash ล่าสุด (เฉพาะบรรทัด image เท่านั้น)
+        run: |
+          sed -i "s|image: orathaisu/hello-python:.*|image: orathaisu/hello-python:${{ github.sha }}|g" k8s/deployment.yaml
 
       - name: Commit updated deployment.yaml # commit และ push ไฟล์ deployment.yaml ที่ถูกแก้ไขกลับไปที่ repository เพื่อให้ deployment ใช้ image tag ล่าสุด
         env:
