@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: orathaisu/hello-python:REPLACE_TAG  # แทนที่ REPLACE_TAG ด้วย commit hash ล่าสุด
+          image: orathaisu/hello-python:3f5e8a9287c0df305b512d1cef71302bb324b9ad  # แทนที่ 3f5e8a9287c0df305b512d1cef71302bb324b9ad ด้วย commit hash ล่าสุด
           imagePullPolicy: Always
           ports:
             - containerPort: 80
