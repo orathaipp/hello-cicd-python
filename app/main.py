@@ -44,3 +44,10 @@ def add(x: int, y: int):
 @app.get("/santa")
 def test():
     return {"message": "if santa, you got gift"}
+
+@app.get("/fact/{x}")
+def test(x: int):
+    res = x
+    for i in x:
+        res = res*x
+    return {"message": f"is value {x} correct?"}
