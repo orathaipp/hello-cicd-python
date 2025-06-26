@@ -40,3 +40,7 @@ def add(x: int, y: int):
     """
     result = x + y
     return {"result": result}
+
+@app.get("/santa")
+def test():
+    return {"message": "if santa, you got gift"}

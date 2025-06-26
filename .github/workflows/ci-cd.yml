@@ -29,13 +29,13 @@ jobs: # กำหนดกลุ่มของงาน (jobs)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u orathaipp --password-stdin
 
       - name: Build Docker image # สร้าง Docker image และแท็กเป็น v3.0.0
-        run: docker build -t ghcr.io/orathaipp/hello-python:v3.0.0 .
+        run: docker build -t ghcr.io/orathaipp/hello-python:v4.0.0 .
 
       - name: Push Docker image # อัปโหลด Docker image ที่สร้างไปยัง GitHub Container Registry ด้วย tag v3.0.0
-        run: docker push ghcr.io/orathaipp/hello-python:v3.0.0
+        run: docker push ghcr.io/orathaipp/hello-python:v4.0.0
 
       - name: Replace image tag in deployment.yaml # แทนที่ค่า image tag ใน deployment.yaml ด้วย ghcr.io/orathaipp/hello-python:v3.0.0
         run: |
-          sed -i "s|image: .*|image: ghcr.io/orathaipp/hello-python:v3.0.0|g" k8s/deployment.yaml
+          sed -i "s|image: .*|image: ghcr.io/orathaipp/hello-python:v4.0.0|g" k8s/deployment.yaml
 
 
