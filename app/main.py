@@ -51,3 +51,8 @@ def test(x: int):
     for i in x:
         res = res*x
     return {"message": f"is value {x} correct?"}
+
+@app.get("/power2/{x}")
+def test(x: int):
+    res = x*x
+    return {"message": f"is value {x} correct?"}
