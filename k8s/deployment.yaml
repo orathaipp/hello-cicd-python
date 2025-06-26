@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: app # ชื่อ container
-          image: ghcr.io/orathaipp/hello-python:v3.0.0 # เปลี่ยนชื่อ image เป็น orathaipp
+          image: ghcr.io/orathaipp/hello-python:v4.0.0 # เปลี่ยนชื่อ image เป็น orathaipp
           imagePullPolicy: Always 
           ports:
             - containerPort: 80
