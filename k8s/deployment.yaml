@@ -6,6 +6,7 @@ kind: Deployment
 metadata:
   name: hello-python # ชื่อของ Deployment
 spec:
+  type: LoadBalancer # เพิ่มประเภทของ Service เป็น LoadBalancer
   replicas: 2 # จำนวน Pod ที่ต้องการให้รันพร้อมกัน
   selector:
     matchLabels:
@@ -15,9 +16,11 @@ spec:
       labels:
         app: hello-python # label ที่จะถูกกำหนดให้กับ Pod ที่สร้างจาก Deployment นี้
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret # ใช้ secret สำหรับดึง image จาก ghcr.io
       containers:
         - name: app # ชื่อ container
-          image: ghcr.io/orathaipp/hello-python:v5.0.0 # เปลี่ยนชื่อ image เป็น orathaipp
+          image: ghcr.io/orathaipp/hello-python:v6.0.0 # เปลี่ยนชื่อ image เป็น orathaipp และ tag เป็น v6.0.0
           imagePullPolicy: Always 
           ports:
             - containerPort: 80
